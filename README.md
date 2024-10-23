@@ -6,15 +6,15 @@ The following features and functionalities are part of **Version 7** of the Comm
 
 ---
 
-## 🌟 **Current Version Features**🌟
+## 🌟 **Current Version Features** 🌟
 
 * **🔒 AES Encryption** : 
-  - Enhanced security for data transmission, ensuring that sensitive information remains confidential and protected from eavesdropping.
+  - Enhanced security for data transmission , ensuring that sensitive information remains confidential and protected from eavesdropping.
 
 * **🚀 Improved Command Execution** : 
   - Better feedback mechanisms with command status reporting and error handling, allowing for smoother operation and user experience.
 
-* **⚡ Optimized Data Handling* *: 
+* **⚡ Optimized Data Handling** : 
   - Efficient parsing and processing of incoming data, significantly improving response times and overall performance.
 
 * **📜 Robust Logging** : 
@@ -38,7 +38,7 @@ The following features and functionalities are part of **Version 7** of the Comm
 ---
 
 ## 🚀 **Future Versions**
-As we continue to develop and enhance this software, the features will be updated here in future versions.
+As we continue to develop and enhance this software, the features will be updated here in future versions. Stay tuned for more exciting updates!
 
 ---
 
