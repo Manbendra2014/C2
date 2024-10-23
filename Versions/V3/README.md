@@ -7,7 +7,7 @@
 
 ## 1. Client Modifications
 
-The following modifications to the **client** reflect enhancements made from its previous version, **Version 2**.
+The following modifications to the **client** reflect enhancements made from its previous version , **Version 2**.
 | Change Type | Description |
 |-------------|-------------|
 | **Updated** | The socket connection setup remains encapsulated in a function `create_socket()`, ensuring clarity in connection handling. |
@@ -19,7 +19,7 @@ The following modifications to the **client** reflect enhancements made from its
 
 ## 2. Server Modifications
 
-The following modifications to the **server** reflect enhancements made from its previous version, **Version 2**.
+The following modifications to the **server** reflect enhancements made from its previous version , **Version 2**.
 
 | Change Type | Description |
 |-------------|-------------|
@@ -31,7 +31,7 @@ The following modifications to the **server** reflect enhancements made from its
 
 ## 3. Reverse Proxy Modifications
 
-The following modifications to the **reverse proxy** reflect enhancements made from its previous version, **Version 2**.
+The following modifications to the **reverse proxy** reflect enhancements made from its previous version , **Version 2**.
 
 | Change Type | Description |
 |-------------|-------------|
