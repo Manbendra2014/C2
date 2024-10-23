@@ -6,7 +6,7 @@ The following features and functionalities are part of **Version 7** of the Comm
 
 ---
 
-## 🌟 **Current Version Features** - Version 7🌟
+## 🌟 **Current Version Features**🌟
 
 * **🔒 AES Encryption** : 
   - Enhanced security for data transmission, ensuring that sensitive information remains confidential and protected from eavesdropping.
