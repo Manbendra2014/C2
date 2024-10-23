@@ -1,11 +1,11 @@
 # Command and Control Server - Version 2
 
 ## Table of Contents
-1. [Client Modifications](#client-code-changes)
-2. [Server Modifications](#server-code-changes)
-3. [Reverse Proxy Modifications](#proxy-code-changes)
+- [1. Client](#1-client-modifications)
+- [2. Server](#2-server-modifications)
+- [3. Reverse Proxy](#3-reverse-proxy-modifications)
 
-## Client Modifications
+## 1. Client Modifications
 
 The following modifications to the **client** reflect enhancements made from its previous version , **Version 1**.
 | Change Type | Description |
@@ -17,7 +17,7 @@ The following modifications to the **client** reflect enhancements made from its
 | **Updated** | Improved error handling during script execution and file management (temp file deletion). |
 | **Updated** | The way commands and responses are processed has been refined, ensuring better output management. |
 
-## Server Modifications
+## 2. Server Modifications
 
 The following modifications to the **server** reflect enhancements made from its previous version , **Version 1**.
 
@@ -29,7 +29,7 @@ The following modifications to the **server** reflect enhancements made from its
 | **Updated** | The structure of output handling has been enhanced for clarity and organization. |
 | **Added**   | Logging of connection attempts, including domain and username parsing, has been added. |
 
-## Reverse Proxy Modifications
+## 3. Reverse Proxy Modifications
 
 The following modifications to the **reverse proxy** reflect enhancements made from its previous version , **Version 1**.
 
