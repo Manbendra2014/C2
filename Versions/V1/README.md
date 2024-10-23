@@ -1,6 +1,6 @@
 # Command and Control Server - Version 1
 
-This document outlines the features of the Command and Control Server developed in three main components: **Reverse Proxy**, **Client**, and **Server**. Each component serves a specific role in enabling communication and command execution in a networked environment.
+This document outlines the features of the Command and Control Server developed in three main components : **Reverse Proxy** , **Client** and **Server**. Each component serves a specific role in enabling communication and command execution in a networked environment.
 
 ## Table of Contents
 - [1. Reverse Proxy](#1-reverse-proxy)
