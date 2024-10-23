@@ -1,11 +1,11 @@
 # Command and Control Server - Version 4
 
 ## Table of Contents
-- [1. Client Modifications](#1-client-modifications)
-- [2. Server Modifications](#2-server-modifications)
-- [3. Reverse Proxy Modifications](#3-reverse-proxy-modifications)
+- [1. Client](#1-client)
+- [2. Server](#2-server)
+- [3. Reverse](#3-reverse-proxy)
 
-## 1. Client Modifications
+## 1. Client
 
 The following modifications to the **client** reflect enhancements made from its previous version , **Version 3**.
 | Change Type | Description |
@@ -16,7 +16,7 @@ The following modifications to the **client** reflect enhancements made from its
 | **Updated** | The structure of the command processing loop has been refined for better readability and performance, making it easier to maintain. |
 | **Updated** | PowerShell execution policies are managed more securely to prevent unauthorized script execution. |
 
-## 2. Server Modifications
+## 2. Server
 
 The following modifications to the **server** reflect enhancements made from its previous version , **Version 3**.
 | Change Type | Description |
@@ -27,7 +27,7 @@ The following modifications to the **server** reflect enhancements made from its
 | **Updated** | Enhanced logging system to track session activities, commands executed, and their respective outputs for each connected client. |
 | **Updated** | Script execution results are now logged per session, with time-stamped entries for better traceability. |
 
-## 3. Reverse Proxy Modifications
+## 3. Reverse Proxy
 
 The following modifications to the **reverse proxy** reflect enhancements made from its previous version , **Version 3**.
 | Change Type | Description |
