@@ -11,7 +11,7 @@ The following modifications to the **client** reflect enhancements made from its
 
 | Change Type | Description |
 |-------------|-------------|
-| **Updated** | The client code has been converted from Python to C, improving performance and control over system resources. |
+| **Updated** | The client code has been converted from Python to C , improving performance and control over system resources. |
 | **Updated** | Improved the command output handling by ensuring proper cleanup and resource management after command execution. |
 | **Updated** | The script execution feature now includes a robust mechanism to handle potential failures and report detailed error messages. |
 | **Updated** | Optimized the command reception logic to allow for better performance and responsiveness during communication. |
