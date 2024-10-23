@@ -3,7 +3,7 @@
 ## Table of Contents
 - [1. Client](#1-client)
 - [2. Server](#2-server)
-- [3. Reverse](#3-reverse-proxy)
+- [3. Reverse Proxy](#3-reverse-proxy)
 
 ## 1. Client
 
