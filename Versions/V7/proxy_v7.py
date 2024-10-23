@@ -87,5 +87,4 @@ if __name__ == "__main__":
     CLIENT_PORT = 8081
     SERVER_HOST = input("Server IP : ")
     SERVER_PORT = 8080
-    # SERVER_HOST = '127.0.0.1'
     start_proxy(CLIENT_PORT, SERVER_HOST, SERVER_PORT)
