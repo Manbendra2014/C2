@@ -11,7 +11,7 @@ This document outlines the features of the Command and Control Server developed 
 
 ## 1. Client
 
-The **Client** is responsible for sending commands to the server through the proxy. It establishes a connection, sends commands, and receives execution results.
+The **client** is responsible for sending commands to the server through the proxy. It establishes a connection, sends commands, and receives execution results.
 
 ### Key Features :
 - **Command Execution** : Sends system commands to the server for execution.
@@ -23,7 +23,7 @@ The **Client** is responsible for sending commands to the server through the pro
 
 ## 2. Server
 
-The **Server** is responsible for executing commands received from the client and managing user directories for storing command outputs.
+The **server** is responsible for executing commands received from the client and managing user directories for storing command outputs.
 
 ### Key Features:
 - **Directory Management** : Creates user-specific directories based on usernames and organizes command outputs by date and time.
@@ -35,7 +35,7 @@ The **Server** is responsible for executing commands received from the client an
 
 ## 3. Reverse Proxy
 
-The **Reverse Proxy** acts as an intermediary between the client and the server. It listens for incoming connections, forwards client requests to the server, and sends the server's responses back to the client.
+The **reverse proxy** acts as an intermediary between the client and the server. It listens for incoming connections, forwards client requests to the server, and sends the server's responses back to the client.
 
 ### Key Features :
 - **Socket Communication** : Establishes a TCP connection to facilitate communication between client and server.
