@@ -1,11 +1,11 @@
 # Command and Control Server - Version 3
 
 ## Table of Contents
-- [1. Client Modifications](#1-client-modifications)
-- [2. Server Modifications](#2-server-modifications)
-- [3. Reverse Proxy Modifications](#3-reverse-proxy-modifications)
+- [1. Client](#1-client)
+- [2. Server](#2-server)
+- [3. Reverse Proxy](#3-reverse-proxy)
 
-## 1. Client Modifications
+## 1. Client
 
 The following modifications to the **client** reflect enhancements made from its previous version , **Version 2**.
 | Change Type | Description |
@@ -17,7 +17,7 @@ The following modifications to the **client** reflect enhancements made from its
 | **Updated** | Enhanced error handling during script execution with detailed messages for failures and successful operations. |
 | **Updated** | The method of command processing has been further optimized for efficiency and robustness. |
 
-## 2. Server Modifications
+## 2. Server
 
 The following modifications to the **server** reflect enhancements made from its previous version , **Version 2**.
 
@@ -29,7 +29,7 @@ The following modifications to the **server** reflect enhancements made from its
 | **Updated** | Refined error handling and feedback mechanisms for command execution outputs. |
 | **Updated** | Enhanced feedback during recon command execution, providing clear user prompts and confirmation. |
 
-## 3. Reverse Proxy Modifications
+## 3. Reverse Proxy
 
 The following modifications to the **reverse proxy** reflect enhancements made from its previous version , **Version 2**.
 
