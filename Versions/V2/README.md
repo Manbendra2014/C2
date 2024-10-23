@@ -1,9 +1,9 @@
 # Command and Control Server - Version 2
 
 ## Table of Contents
-1. [Client Changes](#client-code-changes)
-2. [Server Changes](#server-code-changes)
-3. [Reverse Proxy Changes](#proxy-code-changes)
+1. [Client Modifications](#client-code-changes)
+2. [Server Modifications](#server-code-changes)
+3. [Reverse Proxy Modifications](#proxy-code-changes)
 
 ## Client Modifications
 
