@@ -8,6 +8,10 @@ This tool is made as part of a B.Tech Project, and is meant to closely resemble 
 
 All versions of the tool can be found in the repo, with the latest being **V7**.
 
+<p align="center">
+  <img src="res/example.png" alt="Example Image" />
+</p>
+
 ---
 
 ## Setup instructions
