@@ -1,8 +1,8 @@
 # Command and Control (C2) Server
 
-## What is a Command and Control Server?
+## What is a Command and Control Server ?
 
-A **Command and Control (C2)** server is a tool used to remotely manage systems and devices. It can send commands, receive data, and execute tasks on client machines, typically in a networked environment. While C2 systems are often used in cybersecurity research, they can also be used maliciously by attackers to control compromised systems. 
+A **Command and Control (C2)** server is a tool used to remotely manage systems and devices. It can send commands, receive data and execute tasks on client machines, typically in a networked environment. While C2 systems are often used in cybersecurity research, they can also be used maliciously by attackers to control compromised systems. 
 
 This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence **must be executed only on systems where permission has been granted by the owner.**
 
@@ -29,17 +29,17 @@ As for server and proxy, run `pip3 install -r requirements_glob.txt` to install 
 ### Setup 
 
 #### Server
-1. Download all the requirements by running the pip command
-2. Place the server in the attacker system, along with the three certificates required (server_cert, server_key, ca_cert)
-3. Run the server
+1. Download all the requirements by running the pip command.
+2. Place the server in the attacker system, along with the three certificates required (server_cert, server_key, ca_cert).
+3. Run the server.
 
 #### Proxy
-1. Repeat the steps done in the server, except this time use the certificates pertaining to the proxy-server connection (proxy_cert, proxy_key, ca_cert), and run the proxy
-2. As the proxy requests for an IP, add the server's public IP address
+1. Repeat the steps done in the server, except this time use the certificates pertaining to the proxy-server connection (proxy_cert, proxy_key, ca_cert), and run the proxy.
+2. As the proxy requests for an IP, add the server's public IP address.
 
 #### Client
-1. Compile the file with the command given above
-2. Execute the client to begin reconnissance
+1. Compile the file with the command given above.
+2. Execute the client to begin reconnissance.
 
 ---
 
@@ -68,11 +68,11 @@ As for server and proxy, run `pip3 install -r requirements_glob.txt` to install 
 ## Future Versions
 
 As development continues, new features and improvements will be added in future versions.
-Features to be implemented:
-- DNS based covert communication (such as DoH or DNS tunneling)
-- Client and Server side KDF, with secure transmission of master key
-- Dynamic limiting of network bandwidth for transfer of exfiltrated data
-- Advanced beaconing and persistence of malware
+Features to be implemented :
+- DNS based covert communication (such as DoH or DNS tunneling).
+- Client and Server side KDF, with secure transmission of master key.
+- Dynamic limiting of network bandwidth for transfer of exfiltrated data.
+- Advanced beaconing and persistence of malware.
 
 Stay tuned for updates!
 
