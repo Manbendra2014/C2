@@ -2,9 +2,13 @@
 
 ## What is a Command and Control Server ?
 
-A **Command and Control (C2)** server is a tool used to remotely manage systems and devices. It can send commands, receive data and execute tasks on client machines, typically in a networked environment. While C2 systems are often used in cybersecurity research, they can also be used maliciously by attackers to control compromised systems. 
+<p align="justify">
+A <b>Command and Control (C2)</b> server is a tool used to remotely manage systems and devices. It can send commands, receive data, and execute tasks on client machines, typically in a networked environment. While C2 systems are often used in cybersecurity research, they can also be used maliciously by attackers to control compromised systems.
+</p>
 
-This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence **must be executed only on systems where permission has been granted by the owner.**
+<p align="justify">
+This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence <b>must be executed only on systems where permission has been granted by the owner</b>.
+</p>
 
 All versions of the tool can be found in the repo, with the latest being **V7**.
 
@@ -18,7 +22,9 @@ All versions of the tool can be found in the repo, with the latest being **V7**.
 
 ### Requirements and Startup
 
+<p align="justify">
 The client side executable is made with the intention that it must be able to run on ANY windows system, and hence only depends on dynamically linked DLLs present in the Windows SDK.
+</p>
 
 To create the executable, run `gcc client_v7.c -o client_exec -lws2_32 -lbcrypt -lcrypt32` 
 
@@ -29,15 +35,18 @@ As for server and proxy, run `pip3 install -r requirements_glob.txt` to install 
 ### Setup 
 
 #### Server
+
 1. Download all the requirements by running the pip command.
 2. Place the server in the attacker system, along with the three certificates required (server_cert, server_key, ca_cert).
 3. Run the server.
 
 #### Proxy
+
 1. Repeat the steps done in the server, except this time use the certificates pertaining to the proxy-server connection (proxy_cert, proxy_key, ca_cert), and run the proxy.
 2. As the proxy requests for an IP, add the server's public IP address.
 
 #### Client
+
 1. Compile the file with the command given above.
 2. Execute the client to begin reconnissance.
 
