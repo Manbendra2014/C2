@@ -14,9 +14,9 @@ All versions of the tool can be found in the repo, with the latest being **V7**.
 
 ---
 
-## Setup instructions
+## Setup Instructions
 
-### Requirements and startup
+### Requirements and Startup
 
 The client side executable is made with the intention that it must be able to run on ANY windows system, and hence only depends on dynamically linked DLLs present in the Windows SDK.
 
@@ -48,7 +48,7 @@ As for server and proxy, run `pip3 install -r requirements_glob.txt` to install 
 * **AES Encryption**  
   - All communications made between server and client are in base64 encoding, and encrypted with AES-256 to provide security during data transmission.  The key in **V7** is hardcoded into the client, but will be converted into a KDF derived key in future versions.
 
-* **Improved Command Execution and error handling**  
+* **Improved Command Execution and Error Handling**  
   - Error handling has been implemented with ease of use in mind, making debugging easier and more understandable.
 
 * **Robust Logging**  
