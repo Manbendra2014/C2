@@ -4,6 +4,7 @@
 - [1. Client](#1-client)
 - [2. Server](#2-server)
 - [3. Reverse Proxy](#3-reverse-proxy)
+- [4. SSL Playbook](#4-ssl-playbook)
 
 ## 1. Client
 
@@ -38,3 +39,7 @@ The following modifications to the **reverse proxy** reflect enhancements made f
 | **Updated** | Refined connection handling to better manage various network conditions and maintain consistent performance. |
 | **Updated** | Improved SSL configurations to align with updated security standards and ensure secure data transmission. |
 | **Updated** | Enhanced the mechanism for tracking and managing active client sessions, improving overall performance. |
+
+## 4. SSL Playbook
+
+For instructions on how to install the certificate and key generation with OpenSSL, please refer to the [SSL Playbook](SSL-Playbook.md).
