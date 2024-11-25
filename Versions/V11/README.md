@@ -11,7 +11,7 @@ The following modifications to the **client** reflect enhancements made from its
 
 | Change Type | Description |
 |-------------|-------------|
-| **Updated** | Added RFC 3562 compliant DHKE mechanism for key derivation |
+| **Updated** | Added RFC 3526 compliant DHKE mechanism for key derivation |
 | **Updated** | Minor encryption tweaks |
 | **Updated** | Encryption libraries require static compiling, hence attached command and executables (if required) |
 
