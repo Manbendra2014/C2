@@ -22,7 +22,7 @@ The following modifications to the **server** reflect enhancements made from its
 
 | Change Type | Description |
 |-------------|-------------|
-| **Updated** | Added RFC 3562 compliant DHKE mechanism for key derivation |
+| **Updated** | Added RFC 3526 compliant DHKE mechanism for key derivation |
 | **Updated** | Fixed table display issue present in V10 by using dynamic tables |
 
 ## 3. Reverse Proxy 
