@@ -314,7 +314,8 @@ def input_thread():
                     print("|" + " " * center_padding + f"CLIENT CONTROL PANEL - {client_ip_selected}" + " " * center_padding + "|")
                     print("+" + "=" * (panel_width - 2) + "+")
                     for cmd in commands:
-                        print("| " + cmd + " "*(61-len('| '+cmd))+"    |")
+                        padding = panel_width - 2 - len(cmd) - 2
+                        print("| " + cmd + " " * padding + " |")
                     print("+" + "=" * (panel_width - 2) + "+")
                     print("\n")
                     exec_command = input("$ ")
