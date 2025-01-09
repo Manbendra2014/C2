@@ -9,8 +9,8 @@ import logging
 import ssl
 
 server_host = None
-stored_data = None  # To store data for /querynest
-stored_data_lock = threading.Lock()  # Lock to ensure thread safety
+stored_data = None
+stored_data_lock = threading.Lock()
 
 # thread_local = threading.local()
 
@@ -69,7 +69,6 @@ app = Flask(__name__)
 
 active_clients = {}
 
-# Disable Flask logging
 app.logger.disabled = False
 
 @app.route("/dataforge", methods=["POST"])
@@ -81,7 +80,6 @@ def proxy_endpoint1():
         client_ip = request.remote_addr
         client_port = request.environ.get('REMOTE_PORT')
         ip_port_flag = f"IP_ADDRESS**{client_ip}**PORT_NUMBER**{client_port}"
-        # if (client_ip, client_port) not in active_clients:
         if client_ip not in [_[0] for _ in active_clients]:
             log_message(log_file, f"New client detected: {client_ip}:{client_port}. Adding to active clients list.")
             active_clients[(client_ip, client_port)] = True
@@ -98,11 +96,9 @@ def proxy_endpoint1():
             server_socket.sendall(data_content.encode())
             server_response = server_socket.recv(4096)
             log_message(log_file, f"Received response from server: {server_response.decode()}")                
-            # Use the lock to safely store data
             with stored_data_lock:
                 stored_data = server_response.decode()
-                log_message(log_file, "Data stored successfully.")
-                # print("Data stored successfully.")  # Optional print message                
+                log_message(log_file, "Data stored successfully.")              
             return jsonify({"status": "Data forwarded successfully"}), 200
     except ssl.SSLError as ssl_error:
         error_message = f"[ERROR] SSL/TLS error: {str(ssl_error)}"
@@ -123,11 +119,9 @@ def proxy_endpoint2():
     log_file = create_log_file()
     if request.method == "POST":
         try:
-            data_content = request.data.decode()
-            
-            # Use the lock to safely store data
+            data_content = request.data.decode()            
             with stored_data_lock:
-                stored_data = data_content  # Store the received data
+                stored_data = data_content
             log_message(log_file, f"Received and stored data: {data_content}")
             print(f"Data received and stored: {data_content}")
             return jsonify({"status": "Data received and stored successfully"}), 200
@@ -136,9 +130,7 @@ def proxy_endpoint2():
             log_message(log_file, error_message)
             print(error_message)
             return jsonify({"error": error_message}), 500
-
     elif request.method == "GET":
-        # Use the lock to safely access data
         with stored_data_lock:
             if stored_data:
                 log_message(log_file, f"Fetching stored data: {stored_data}")
@@ -152,7 +144,6 @@ def proxy_endpoint2():
                 return jsonify({"message": "No data stored"}), 404
 
 def start_proxy(local_port, server_host, server_port):
-    # print("NEW PROXY IS BEING STARTED FOR",(local_port,server_port,server_host))
     log_file = create_log_file()
     log_message(log_file, f"Proxy server listening on port {local_port}...")
     active_clients = {}
@@ -166,8 +157,6 @@ def start_proxy(local_port, server_host, server_port):
 
 def run_app():
     # app.run(host="0.0.0.0", port=8081, ssl_context=("./domain_certificates/ciphervortex_full_chain.pem", "./domain_certificates/ciphervortex.key"))
-    # raw_socket = socket.create_connection((server_host, 8080))
-    # print("NEW APP IS BEING RUN",(server_host))
     app.run(host = "0.0.0.0", port=8081)
 
 def proxy_start():
@@ -175,18 +164,13 @@ def proxy_start():
     server_host = input("Server IP: ")
     server_port = 8080
     client_port = 8082
-
     raw_socket = socket.create_connection((server_host, server_port))
-
     proxy_thread = threading.Thread(target=start_proxy, args=(client_port, server_host, server_port))
     app_thread = threading.Thread(target=run_app)
-
     proxy_thread.daemon = True
     app_thread.daemon = True
-
     proxy_thread.start()
     app_thread.start()
-
     proxy_thread.join()
     app_thread.join()
 

