@@ -10,7 +10,7 @@ A <b>Command and Control (C2)</b> server is a tool used to remotely manage syste
 This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence <b>must be executed only on systems where permission has been granted by the owner</b>.
 </p>
 
-All versions of the tool can be found in the repo, with the latest being ~~**V11**~~ **V13**.
+All versions of the tool can be found in the repo, with the latest being **V13**.
 
 <p align="center">
   <img src="res/v_11.png" alt="Example Image" />
@@ -55,30 +55,9 @@ As for server and proxy, run `pip3 install -r requirements.txt` to install all 3
 
 ## ~~Highlights of Version 11~~
 
-* ~~**DHKE and AES**~~
-  - ~~An RFC 3526 compliant DHKE is performed using group 14.  Shared secret is used to obtain 16-byte key for AES-256, which is performed in conjunction with URL-safe base64 encoding for potential protocol change.~~
-
-* ~~**Detailed logging and Audit Trails**~~  
-  - ~~All reverse proxy connections and network transmissions are logged robustly for future analysis.  On server side, all executed commands and outputs are logged and timestamped for easy analysis.  Future versions might include using a cryptographically secure database for easier access.~~
-
-* ~~**Enhanced SSL/TLS Security**~~  
-  - ~~Proxy - Server connection functions under mTLS with self-signed certificates.  Client - Proxy connection is unencrypted TCP, but all transmitted data is encrypted and encoded with secure cryptographic measures.~~
-
-* ~~**Session Management and other features**~~  
-  - ~~Allows handling multiple connections at once.~~
-  - ~~Allows executing commands or script and retrieving all displayed output.~~
-  - ~~Provide a form of persistence to the executable, such as launching on start up.~~
-  - ~~Beaconing (WIP)~~
-
 ---
 
 ## Future Versions
-
-~~As development continues, new features and improvements will be added in future versions.~~
-~~Features to be implemented :~~
-- ~~DNS based covert communication (such as DoH or DNS tunneling).~~
-- ~~Dynamic limiting of network bandwidth for transfer of exfiltrated data.~~
-- ~~Advanced beaconing and persistence of malware.~~
 
 As development continues, new features and improvements will be added in future versions.
 
