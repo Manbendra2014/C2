@@ -10,7 +10,7 @@ A <b>Command and Control (C2)</b> server is a tool used to remotely manage syste
 This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence <b>must be executed only on systems where permission has been granted by the owner</b>.
 </p>
 
-All versions of the tool can be found in the repo, with the latest being **V11**.
+All versions of the tool can be found in the repo, with the latest being ~~**V11**~~ **V13**.
 
 <p align="center">
   <img src="res/v_11.png" alt="Example Image" />
