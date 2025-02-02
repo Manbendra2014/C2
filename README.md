@@ -27,7 +27,7 @@ The client side executable is made with the intention that it must be able to ru
 </p>
 
 To create the executable, run 
-`gcc -o client_static client_v8.c -I"C:\ProgramData\mingw64\mingw64\opt\include" -L"C:\ProgramData\mingw64\mingw64\opt\lib" -Wl,-Bstatic -lcrypto -lssl -lz -Wl,-Bdynamic -lws2_32 -lgdi32 -lbcrypt -lcrypt32` 
+`gcc -w -o client13.exe client_v13.c anti-debug.c sandbox.c -Wl,-Bstatic -lcrypto -lssl -lz -Wl,-Bdynamic -lws2_32 -lgdi32 -lbcrypt -lcrypt32 -lcurl -ljansson -lnetapi32` 
 
 As for server and proxy, run `pip3 install -r requirements.txt` to install all 3rd party requirements.
 
@@ -53,32 +53,36 @@ As for server and proxy, run `pip3 install -r requirements.txt` to install all 3
 
 ---
 
-## Highlights of Version 11
+## ~~Highlights of Version 11~~
 
-* **DHKE and AES**  
-  - An RFC 3526 compliant DHKE is performed using group 14.  Shared secret is used to obtain 16-byte key for AES-256, which is performed in conjunction with URL-safe base64 encoding for potential protocol change
+* ~~**DHKE and AES**~~
+  - ~~An RFC 3526 compliant DHKE is performed using group 14.  Shared secret is used to obtain 16-byte key for AES-256, which is performed in conjunction with URL-safe base64 encoding for potential protocol change.~~
 
-* **Detailed logging and Audit Trails**  
-  - All reverse proxy connections and network transmissions are logged robustly for future analysis.  On server side, all executed commands and outputs are logged and timestamped for easy analysis.  Future versions might include using a cryptographically secure database for easier access.
+* ~~**Detailed logging and Audit Trails**~~  
+  - ~~All reverse proxy connections and network transmissions are logged robustly for future analysis.  On server side, all executed commands and outputs are logged and timestamped for easy analysis.  Future versions might include using a cryptographically secure database for easier access.~~
 
-* **Enhanced SSL/TLS Security**  
-  - Proxy - Server connection functions under mTLS with self-signed certificates.  Client - Proxy connection is unencrypted TCP, but all transmitted data is encrypted and encoded with secure cryptographic measures.
+* ~~**Enhanced SSL/TLS Security**~~  
+  - ~~Proxy - Server connection functions under mTLS with self-signed certificates.  Client - Proxy connection is unencrypted TCP, but all transmitted data is encrypted and encoded with secure cryptographic measures.~~
 
-* **Session Management and other features**  
-  - Allows handling multiple connections at once.
-  - Allows executing commands or script and retrieving all displayed output.
-  - Provide a form of persistence to the executable, such as launching on start up.
-  - Beaconing (WIP)
+* ~~**Session Management and other features**~~  
+  - ~~Allows handling multiple connections at once.~~
+  - ~~Allows executing commands or script and retrieving all displayed output.~~
+  - ~~Provide a form of persistence to the executable, such as launching on start up.~~
+  - ~~Beaconing (WIP)~~
 
 ---
 
-## Future Versions
+## ~~Future Versions~~
+
+~~As development continues, new features and improvements will be added in future versions.~~
+~~Features to be implemented :~~
+- ~~DNS based covert communication (such as DoH or DNS tunneling).~~
+- ~~Dynamic limiting of network bandwidth for transfer of exfiltrated data.~~
+- ~~Advanced beaconing and persistence of malware.~~
 
 As development continues, new features and improvements will be added in future versions.
-Features to be implemented :
-- DNS based covert communication (such as DoH or DNS tunneling).
-- Dynamic limiting of network bandwidth for transfer of exfiltrated data.
-- Advanced beaconing and persistence of malware.
+
+Version 13 is the current release, and its features will be updated and enhanced in future versions.
 
 Stay tuned for updates!
 
