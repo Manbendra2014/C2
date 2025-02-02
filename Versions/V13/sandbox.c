@@ -12,14 +12,11 @@ void ToLowerCase(TCHAR *str) {
 BOOL IsMachineInDomain() {
     PDSROLE_PRIMARY_DOMAIN_INFO_BASIC pDomainInfo = NULL;
     DWORD status;
-
     status = DsRoleGetPrimaryDomainInformation(NULL, DsRolePrimaryDomainInfoBasic, (PBYTE*)&pDomainInfo);
-
     if (status != ERROR_SUCCESS) {
         // printf("Failed to retrieve domain information. Error: %lu\n", status);
         return FALSE;
     }
-
     BOOL isInDomain = FALSE;
     if (pDomainInfo->MachineRole == DsRole_RoleMemberWorkstation ||
         pDomainInfo->MachineRole == DsRole_RoleMemberServer ||
@@ -27,11 +24,8 @@ BOOL IsMachineInDomain() {
         pDomainInfo->MachineRole == DsRole_RolePrimaryDomainController) {
         isInDomain = TRUE;
     }
-
     // printf("Machine Role: %u\n", pDomainInfo->MachineRole);
-
     DsRoleFreeMemory(pDomainInfo);
-
     return isInDomain;
 }
 
@@ -39,7 +33,6 @@ BOOL IsInsideVM() {
     HKEY hKey;
     TCHAR szManufacturer[256], szModel[256];
     DWORD dwSize;
-
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, TEXT("SYSTEM\\CurrentControlSet\\Control\\SystemInformation"), 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
         dwSize = sizeof(szManufacturer);
         if (RegQueryValueEx(hKey, TEXT("SystemManufacturer"), NULL, NULL, (LPBYTE)szManufacturer, &dwSize) == ERROR_SUCCESS) {
@@ -49,7 +42,6 @@ BOOL IsInsideVM() {
             RegCloseKey(hKey);
             return FALSE;
         }
-
         dwSize = sizeof(szModel);
         if (RegQueryValueEx(hKey, TEXT("SystemProductName"), NULL, NULL, (LPBYTE)szModel, &dwSize) == ERROR_SUCCESS) {
             ToLowerCase(szModel);
@@ -59,7 +51,6 @@ BOOL IsInsideVM() {
             return 0;
         }
         RegCloseKey(hKey);
-
         if (strstr(szManufacturer, "vmware") != NULL || strstr(szModel, "vmware") != NULL) {
             return TRUE;
         }
@@ -82,7 +73,6 @@ BOOL IsInsideVM() {
 BOOL memoryCheck() {
     MEMORYSTATUSEX statex;
     statex.dwLength = sizeof(MEMORYSTATUSEX);
-
     if (GlobalMemoryStatusEx(&statex)) {
         if (statex.ullTotalPhys < 4LL * 1024 * 1024 * 1024) {
             return TRUE;
@@ -108,7 +98,6 @@ BOOL screenResolution() {
 BOOL detectUserInactivity(DWORD thresholdMs) {
     LASTINPUTINFO lii = {0};
     lii.cbSize = sizeof(LASTINPUTINFO);
-
     if (GetLastInputInfo(&lii)) {
         DWORD currentTime = GetTickCount();
         DWORD idleTime = currentTime - lii.dwTime;
@@ -119,24 +108,17 @@ BOOL detectUserInactivity(DWORD thresholdMs) {
 
 BOOL sandboxCheck() {
     DWORD inactivityThreshold = 10000;
-
     if (IsMachineInDomain()) {
-        // printf("Bro Cool!");
         return FALSE;
     }
     else {
         if (IsInsideVM() || screenResolution() || memoryCheck()) {
-            // printf("Bro not cool!");
             return TRUE;
         }
-
         else if (detectUserInactivity(inactivityThreshold)) {
-            // printf("Bro not cool!");
             return TRUE;
         }
-
         else {
-            // printf("Bro Cool!");
             return FALSE;
         }
     }

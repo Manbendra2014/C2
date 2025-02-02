@@ -21,7 +21,6 @@ bool IsDebugged()
 {
     // Set the unhandled exception filter
     SetUnhandledExceptionFilter(ExceptionHandler);
-
     if (setjmp(jumpBuffer) == 0)
     {
         // Inline assembly to set the Trap Flag
@@ -34,7 +33,6 @@ bool IsDebugged()
             :
             : "memory"
         );
-
         debuggerDetected = true;
     }
     else
@@ -42,9 +40,7 @@ bool IsDebugged()
         // Exception was caught: no debugger detected
         debuggerDetected = false;
     }
-
     // Reset the unhandled exception filter
     SetUnhandledExceptionFilter(NULL);
-
     return debuggerDetected;
 }

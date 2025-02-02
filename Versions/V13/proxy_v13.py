@@ -98,7 +98,7 @@ def proxy_endpoint1():
             log_message(log_file, f"Received response from server: {server_response.decode()}")                
             with stored_data_lock:
                 stored_data = server_response.decode()
-                log_message(log_file, "Data stored successfully.")              
+                log_message(log_file, "Data stored successfully.")
             return jsonify({"status": "Data forwarded successfully"}), 200
     except ssl.SSLError as ssl_error:
         error_message = f"[ERROR] SSL/TLS error: {str(ssl_error)}"
@@ -156,12 +156,13 @@ def start_proxy(local_port, server_host, server_port):
             log_message(log_file, f"Accepted connection from {client_ip}:{client_port}")
 
 def run_app():
-    # app.run(host="0.0.0.0", port=8081, ssl_context=("./domain_certificates/ciphervortex_full_chain.pem", "./domain_certificates/ciphervortex.key"))
-    app.run(host = "0.0.0.0", port=8081)
+    app.run(host="0.0.0.0", port=8081, ssl_context=("./domain_certificates/ciphervortex_full_chain.pem", "./domain_certificates/ciphervortex.key"))
+    # app.run(host="0.0.0.0", port=8081, ssl_context=("./domain_certificates/cybernova_full_chain.pem", "./domain_certificates/cybernova.key"))
+    # app.run(host="0.0.0.0", port=8081)
 
 def proxy_start():
     global server_host,raw_socket
-    server_host = input("Server IP: ")
+    server_host = input("Server IP : ")
     server_port = 8080
     client_port = 8082
     raw_socket = socket.create_connection((server_host, server_port))

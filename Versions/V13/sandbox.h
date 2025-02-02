@@ -8,15 +8,10 @@
 void ToLowerCase(TCHAR *str);
 
 BOOL IsMachineInDomain();
-
 BOOL IsInsideVM();
-
 BOOL memoryCheck();
-
 BOOL screenResolution();
-
 BOOL detectUserInactivity(DWORD thresholdMs);
-
 BOOL sandboxCheck();
 
 #endif // SANDBOX_H
