@@ -72,7 +72,7 @@ As for server and proxy, run `pip3 install -r requirements.txt` to install all 3
 
 ---
 
-## ~~Future Versions~~
+## Future Versions
 
 ~~As development continues, new features and improvements will be added in future versions.~~
 ~~Features to be implemented :~~
