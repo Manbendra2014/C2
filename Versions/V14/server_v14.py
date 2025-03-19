@@ -344,11 +344,11 @@ def input_thread():
                             send_to_endpoint(enc_all_input(exec_command+'\n'))
                     elif exec_command.lower() == 'file_transfer':
                         send_to_endpoint(enc_all_input("FILE_TRANSFER"))
-                        relative_path = input("Enter the relative path to file to be received:")
+                        relative_path = input("Enter the relative path to file to be received :")
                         if not relative_path:
-                            raise ValueError("Relative path cannot be empty")
+                            raise ValueError("Relative path cannot be empty.")
                         file_path_data = relative_path.encode("utf-8")
-                        print(f"Sent file path to client: {file_path_data}")
+                        print(f"Sent file path to client : {file_path_data}")
                         send_to_endpoint(file_path_data)
                         file_type_data = b""
                         while True:
@@ -357,10 +357,10 @@ def input_thread():
                                 file_type_data += chunk.split(b"EOF")[0]
                                 break
                             if not chunk:
-                                raise ValueError("No file type received")
+                                raise ValueError("No file type received.")
                             file_type_data += chunk
                         file_type = file_type_data.decode("utf-8")
-                        new_file_path = f"received_Data.{file_type}"
+                        new_file_path = f"received_data.{file_type}"
                         total_bytes_received = 0
                         with open(new_file_path, "wb") as f:
                             while True:
@@ -371,7 +371,7 @@ def input_thread():
                                 else:
                                     f.write(data)
                                     total_bytes_received += len(data)
-                            print(f"File data saved to: {new_file_path}")
+                            print(f"File data saved to : {new_file_path}")
                     elif exec_command.lower() == 'script':
                         while True:
                             print("\nScript menu\n")
