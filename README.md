@@ -10,7 +10,7 @@ A <b>Command and Control (C2)</b> server is a tool used to remotely manage syste
 This tool is made as part of a B.Tech Project, and is meant to closely resemble an enterprise-level C2 / red-teaming framework.  That said, it does provide actual data exfiltration and RCE, and hence <b>must be executed only on systems where permission has been granted by the owner</b>.
 </p>
 
-All versions of the tool can be found in the repo, with the latest being **V13**.
+All versions of the tool can be found in the repo, with the latest being **V15**.
 
 <p align="center">
   <img src="res/v_11.png" alt="Example Image" />
@@ -23,11 +23,11 @@ All versions of the tool can be found in the repo, with the latest being **V13**
 ### Requirements and Startup
 
 <p align="justify">
-The client side executable is made with the intention that it must be able to run on ANY windows system, and hence only depends on dynamically linked DLLs present in the Windows SDK.
+The client side executable is made with the intention that it must be able to run on ANY windows system, and hence only depends on dynamically linked DLLs present in the Windows SDK.  For the sake of creating an executable, we have dynamically linked all libraries, but uncommon libraries can be statically linked to avoid runtime issues on victim machines.
 </p>
 
 To create the executable, run 
-`gcc -w -o client13.exe client_v13.c anti-debug.c sandbox.c -Wl,-Bstatic -lcrypto -lssl -lz -Wl,-Bdynamic -lws2_32 -lgdi32 -lbcrypt -lcrypt32 -lcurl -ljansson -lnetapi32` 
+`gcc -w -o client15.exe client_v15.c anti-debug.c sandbox.c -Wl,-Bstatic -lcrypto -lssl -lz -Wl,-Bdynamic -lws2_32 -lgdi32 -lbcrypt -lcrypt32 -lcurl -ljansson -lnetapi32 -liphlpapi` 
 
 As for server and proxy, run `pip3 install -r requirements.txt` to install all 3rd party requirements.
 
@@ -53,7 +53,15 @@ As for server and proxy, run `pip3 install -r requirements.txt` to install all 3
 
 ---
 
-## ~~Highlights of Version 11~~
+## Updates in Ver 15!
+
+The current version V15.  Some of the key features in this version include:
+
+1. Menu-driven attack UI - Utilize the several options provided through the CLI based UI
+2. Isolated attack server - All commands will be relayed through a WebServer capable of providing HTTPS connections, negating MITMs
+3. Robust Encryption standards - All data transmitted in the C2 channel is encrypted under AES-128 with a newly determined shared key for each client connection
+4. Evasive module - Client executable has inbuilt precautions to detect detection, and evade accordingly
+5. Bandwidth limited file transfer - Using compression algorithms, file transfer is performed to avoid unnatural system resource spikes
 
 ---
 
@@ -61,7 +69,7 @@ As for server and proxy, run `pip3 install -r requirements.txt` to install all 3
 
 As development continues, new features and improvements will be added in future versions.
 
-Version 13 is the current release, and its features will be updated and enhanced in future versions.
+All previous versions along with source codes and all required files are available in the repository.
 
 Stay tuned for updates!
 
